@@ -1,10 +1,11 @@
 "use client";
 
+import { Error, Loader } from "@/components/Loading&Error";
 import { columns } from "@/components/table/Columns";
 import { TableUI } from "@/components/table/Table";
 import { useUsers } from "@/hooks/useUsers";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 const UserTable = () => {
   const { data, isLoading, refetch, isSuccess, error } = useUsers();
@@ -41,9 +42,9 @@ const UserTable = () => {
   };
 
   return (
-    <>
+    <Suspense fallback={<Loader />}>
       {userData.length === 0 && isLoading ? (
-        <div className="flex items-center justify-center">Loading..</div>
+        <Loader />
       ) : (
         <TableUI
           data={paginatedUsers}
@@ -54,12 +55,8 @@ const UserTable = () => {
           totalPages={totalPages}
         />
       )}
-      {error && (
-        <div className="flex items-center justify-center">
-          Error fetching users: {error.message}
-        </div>
-      )}
-    </>
+      {error && <Error message={`Error fetching users: ${error.message}`} />}
+    </Suspense>
   );
 };
 
