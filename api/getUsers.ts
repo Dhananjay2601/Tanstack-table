@@ -1,5 +1,6 @@
 import { baseAxios } from "@/lib/apiHead";
 import { User } from "@/types/user";
+import { AxiosError } from "axios";
 
 type FetchResponse = {
   data: User[] | null;
@@ -17,6 +18,21 @@ const fetchData = async (url: string): Promise<FetchResponse> => {
   }
 };
 
-export const fetchUsers = async () => {
-  return fetchData("/users");
+export const fetchUsers = async (): Promise<User[]> => {
+  try {
+    const response = await fetchData("/users");
+    if (response.data) {
+      return response.data;
+    }
+    throw new Error("No user data found.");
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(
+        error.response
+          ? `API error: ${error.response.status} - ${error.response.data}`
+          : "API error: No response received from the server."
+      );
+    }
+    throw error;
+  }
 };

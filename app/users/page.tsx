@@ -28,7 +28,7 @@ const UserTable = () => {
   }, [searchParams]);
 
   // Since there is no pagination or limit params in the given API, I have made the adjusments here
-  const userData = Array.isArray(data?.data) ? data.data : [];
+  const userData = Array.isArray(data) ? data : [];
   const usersPerPage = 5;
   const totalPages = Math.ceil(userData.length / usersPerPage);
 
