@@ -5,7 +5,7 @@ import { columns } from "@/components/table/Columns";
 import { TableUI } from "@/components/table/Table";
 import { useUsers } from "@/hooks/useUsers";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const UserTable = () => {
   const { data, isLoading, refetch, isSuccess, error } = useUsers();
@@ -42,7 +42,7 @@ const UserTable = () => {
   };
 
   return (
-    <Suspense fallback={<Loader />}>
+    <>
       {userData.length === 0 && isLoading ? (
         <Loader />
       ) : (
@@ -56,7 +56,7 @@ const UserTable = () => {
         />
       )}
       {error && <Error message={`Error fetching users: ${error.message}`} />}
-    </Suspense>
+    </>
   );
 };
 

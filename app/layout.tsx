@@ -3,6 +3,8 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import { Providers } from "../lib/providers";
 import Header from "@/components/Header";
+import { Suspense } from "react";
+import { Loader } from "@/components/Loading&Error";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +28,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={`${geistSans.variable}`}>
           <Header />
-          {children}
+          <Suspense fallback={<Loader />}>{children}</Suspense>
         </body>
       </html>
     </Providers>
